@@ -631,7 +631,7 @@ class CommonFrame(metaclass=ABCMeta):
 
 
     @abstractmethod
-    def convert2frame(byte_data, cfg=None):
+    def convert2frame(self, byte_data, cfg=None):
 
         convert_method = {
             0: DataFrame.convert2frame,
@@ -647,7 +647,7 @@ class CommonFrame(metaclass=ABCMeta):
 
         # Get second byte and determine frame type by shifting right to get higher 4 bits
         frame_type = int.from_bytes([byte_data[1]], byteorder="big", signed=False) >> 4
-
+        print('ql: frame_type:', frame_type)
         if frame_type == 0:  # DataFrame pass Configuration to decode message
             return convert_method[frame_type](byte_data, cfg)
 

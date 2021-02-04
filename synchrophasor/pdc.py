@@ -78,6 +78,7 @@ class Pdc(object):
         Request for PMU header message
         :return: HeaderFrame
         """
+        # ql: construct a "header" command frame
         get_header = CommandFrame(self.pdc_id, "header")
         self.pmu_socket.sendall(get_header.convert2bytes())
 
@@ -129,6 +130,8 @@ class Pdc(object):
             received_data += self.pmu_socket.recv(self.buffer_size)
 
         bytes_received = len(received_data)
+
+        # get the frame size by parse the byte[2:4] in Common Header
         total_frame_size = int.from_bytes(received_data[2:4], byteorder="big", signed=False)
 
         # Keep receiving until every byte of that message is received
@@ -142,6 +145,7 @@ class Pdc(object):
         # If complete message is received try to decode it
         if len(received_data) == total_frame_size:
             try:
+                # ql: pmu_cfg2 is None
                 received_message = CommonFrame.convert2frame(received_data, self.pmu_cfg2)  # Try to decode received data
                 self.logger.debug("[%d] - Received %s from PMU (%s:%d)", self.pdc_id, type(received_message).__name__,
                                   self.pmu_ip, self.pmu_port)
