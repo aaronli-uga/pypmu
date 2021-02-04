@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     pdc.run()  # Connect to PMU
 
-    header = pdc.get_header()  # Get header message from PMU
+    # header = pdc.get_header()  # Get header message from PMU
     config = pdc.get_config()  # Get configuration from PMU
 
     pdc.start()  # Request to start sending measurements
